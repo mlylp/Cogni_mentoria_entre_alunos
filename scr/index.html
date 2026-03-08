@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cogni | Login e Cadastro</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="brand-panel">
+      <div class="brand-content">
+        <img src="assets/img/logo.png" alt="Logo Cogni" class="logo" />
+
+        <h1>A inteligência de quem já foi aprovado.</h1>
+        <p>
+          Entre na sua conta ou crie seu cadastro para continuar sua jornada com a Cogni.
+        </p>
+
+        <div class="brand-highlights">
+          <div class="highlight-card">
+            <i class="fa-solid fa-brain"></i>
+            <span>Aprendizado inteligente</span>
+          </div>
+          <div class="highlight-card">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Foco em aprovação</span>
+          </div>
+          <div class="highlight-card">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Evolução contínua</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="tabs">
+          <button class="tab-btn active" id="show-login">Entrar</button>
+          <button class="tab-btn" id="show-register">Cadastrar</button>
+        </div>
+
+        <div class="welcome-text">
+          <h2 id="form-title">Bem-vindo de volta</h2>
+          <p id="form-subtitle">Faça login para acessar sua conta.</p>
+        </div>
+
+        <!-- LOGIN -->
+        <form id="login-form" class="form active-form">
+          <div class="input-group">
+            <label for="login-email">E-mail</label>
+            <div class="input-wrapper">
+              <i class="fa-regular fa-envelope"></i>
+              <input type="email" id="login-email" placeholder="Digite seu e-mail" required />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="login-password">Senha</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="login-password" placeholder="Digite sua senha" required />
+              <button type="button" class="toggle-password" data-target="login-password">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox">
+              <input type="checkbox" />
+              <span>Lembrar de mim</span>
+            </label>
+            <a href="#" class="link">Esqueci minha senha</a>
+          </div>
+
+          <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+
+        <!-- CADASTRO -->
+        <form id="register-form" class="form">
+          <div class="input-group">
+            <label for="register-name">Nome completo</label>
+            <div class="input-wrapper">
+              <i class="fa-regular fa-user"></i>
+              <input type="text" id="register-name" placeholder="Digite seu nome" required />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="register-email">E-mail</label>
+            <div class="input-wrapper">
+              <i class="fa-regular fa-envelope"></i>
+              <input type="email" id="register-email" placeholder="Digite seu e-mail" required />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="register-password">Senha</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="register-password" placeholder="Crie uma senha" required />
+              <button type="button" class="toggle-password" data-target="register-password">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="register-confirm-password">Confirmar senha</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="register-confirm-password" placeholder="Confirme sua senha" required />
+              <button type="button" class="toggle-password" data-target="register-confirm-password">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <label class="checkbox terms">
+            <input type="checkbox" required />
+            <span>Li e aceito os termos de uso e a política de privacidade.</span>
+          </label>
+
+          <button type="submit" class="btn-primary">Criar conta</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
