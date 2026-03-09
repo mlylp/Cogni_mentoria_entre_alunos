@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página da Mentoria | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Página da Mentoria</h1>
+        <p class="page-subtitle">Informações da sessão e link do Meet.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="info-list">
+        <div class="info-item"><strong>Mentor:</strong> Carlos Henrique</div>
+        <div class="info-item"><strong>Data:</strong> 15/03/2026</div>
+        <div class="info-item"><strong>Horário:</strong> 19:00</div>
+        <div class="info-item"><strong>Status:</strong> Confirmada</div>
+        <div class="info-item">
+          <strong>Link do Google Meet:</strong><br><br>
+          <a class="btn-link" href="https://meet.google.com/abc-defg-hij" target="_blank">Abrir Meet</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+  </script>
+</body>
+</html>

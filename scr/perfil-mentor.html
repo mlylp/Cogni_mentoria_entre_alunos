@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Mentor | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Perfil do Mentor</h1>
+        <p class="page-subtitle">Informações do mentor selecionado.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="info-list">
+        <div class="info-item"><strong>Nome:</strong> Carlos Henrique</div>
+        <div class="info-item"><strong>Especialidade:</strong> Matemática, Física e estratégia de prova</div>
+        <div class="info-item"><strong>Experiência:</strong> 5 anos com mentorias</div>
+        <div class="info-item"><strong>Avaliação:</strong> 4.9/5</div>
+        <div class="info-item"><strong>Formato:</strong> Mentoria online com Google Meet</div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <a class="btn-link" href="agendar-mentoria.html">Escolher horário</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+  </script>
+</body>
+</html>

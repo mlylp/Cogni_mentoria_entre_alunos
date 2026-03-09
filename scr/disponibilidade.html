@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disponibilidade | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Disponibilidade</h1>
+        <p class="page-subtitle">Horários mock cadastrados pelo mentor.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="info-list">
+        <div class="info-item">Segunda-feira - 19:00 às 21:00</div>
+        <div class="info-item">Quarta-feira - 18:00 às 20:00</div>
+        <div class="info-item">Sexta-feira - 20:00 às 22:00</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("mentor");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+  </script>
+</body>
+</html>

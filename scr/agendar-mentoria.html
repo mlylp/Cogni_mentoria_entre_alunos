@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendar Mentoria | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Agendar Mentoria</h1>
+        <p class="page-subtitle">Escolha um horário disponível.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="page-grid">
+        <div class="slot-card">
+          <h3>15/03/2026 - 19:00</h3>
+          <p>Mentor: Carlos Henrique</p>
+          <a class="btn-link" href="pagamento.html">Selecionar</a>
+        </div>
+
+        <div class="slot-card">
+          <h3>16/03/2026 - 20:00</h3>
+          <p>Mentor: Carlos Henrique</p>
+          <a class="btn-link" href="pagamento.html">Selecionar</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+  </script>
+</body>
+</html>

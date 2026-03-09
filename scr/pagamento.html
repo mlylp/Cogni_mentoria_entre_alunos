@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Pagamento</h1>
+        <p class="page-subtitle">Simulação de pagamento da mentoria.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="info-list">
+        <div class="info-item"><strong>Mentor:</strong> Carlos Henrique</div>
+        <div class="info-item"><strong>Data:</strong> 15/03/2026</div>
+        <div class="info-item"><strong>Horário:</strong> 19:00</div>
+        <div class="info-item"><strong>Valor:</strong> R$ 50,00</div>
+      </div>
+
+      <button id="confirm-payment" class="btn-link" type="button" style="margin-top: 20px;">
+        Confirmar pagamento mock
+      </button>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+
+    const confirmPaymentBtn = document.getElementById("confirm-payment");
+    if (confirmPaymentBtn) {
+      confirmPaymentBtn.addEventListener("click", () => {
+        const user = getCurrentUser();
+
+        addMentoria({
+          mentor: "Carlos Henrique",
+          aluno: user ? user.nome : "Aluno Teste",
+          data: "2026-03-15",
+          horario: "19:00",
+          meetLink: "https://meet.google.com/abc-defg-hij",
+          status: "confirmada"
+        });
+
+        window.location.href = "calendario-aluno.html";
+      });
+    }
+  </script>
+</body>
+</html>

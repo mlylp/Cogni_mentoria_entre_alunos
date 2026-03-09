@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário do Aluno | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Calendário de Mentorias</h1>
+        <p class="page-subtitle">Suas mentorias agendadas.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div id="events-list" class="info-list"></div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+
+    const eventsList = document.getElementById("events-list");
+    const mentorias = getMentorias();
+    const user = getCurrentUser();
+
+    const mentoriasDoAluno = mentorias.filter((item) => item.aluno === user.nome);
+
+    if (!mentoriasDoAluno.length) {
+      eventsList.innerHTML = '<div class="info-item">Nenhuma mentoria encontrada.</div>';
+    } else {
+      eventsList.innerHTML = mentoriasDoAluno.map((item) => `
+        <div class="event-card">
+          <h3>${item.mentor}</h3>
+          <p><strong>Data:</strong> ${item.data}</p>
+          <p><strong>Horário:</strong> ${item.horario}</p>
+          <p><strong>Status:</strong> ${item.status}</p>
+          <a class="btn-link" href="mentoria.html">Abrir mentoria</a>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>

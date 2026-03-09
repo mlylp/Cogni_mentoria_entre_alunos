@@ -4,25 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard do Aluno | Cognu</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <main class="page-container">
-    <div class="page-card">
-      <h1 class="page-title">Dashboard do Aluno</h1>
-      <p class="page-subtitle">Login realizado com sucesso.</p>
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Dashboard do Aluno</h1>
+        <p class="page-subtitle">Bem-vindo, <span class="user-name"></span>.</p>
+      </div>
 
       <button id="logout-btn" class="btn-logout" type="button">Sair</button>
     </div>
+
+    <section class="page-card">
+      <div class="page-grid">
+        <a class="nav-card btn-link" href="buscar-mentores.html">Buscar Mentores</a>
+        <a class="nav-card btn-link" href="perfil-mentor.html">Perfil do Mentor</a>
+        <a class="nav-card btn-link" href="agendar-mentoria.html">Agendar Mentoria</a>
+        <a class="nav-card btn-link" href="pagamento.html">Pagamento</a>
+        <a class="nav-card btn-link" href="calendario-aluno.html">Calendário de Mentorias</a>
+      </div>
+    </section>
   </main>
 
   <script src="auth.js"></script>
   <script>
     requireAuth();
     requireRole("aluno");
+    renderUserName(".user-name");
 
     const logoutBtn = document.getElementById("logout-btn");
-
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
         logoutMock();

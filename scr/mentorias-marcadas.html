@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentorias Marcadas | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Mentorias Marcadas</h1>
+        <p class="page-subtitle">Sessões vinculadas ao mentor.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div id="mentor-events" class="info-list"></div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("mentor");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+
+    const mentorEvents = document.getElementById("mentor-events");
+    const mentorias = getMentorias();
+
+    if (!mentorias.length) {
+      mentorEvents.innerHTML = '<div class="info-item">Nenhuma mentoria encontrada.</div>';
+    } else {
+      mentorEvents.innerHTML = mentorias.map((item) => `
+        <div class="event-card">
+          <h3>${item.aluno}</h3>
+          <p><strong>Data:</strong> ${item.data}</p>
+          <p><strong>Horário:</strong> ${item.horario}</p>
+          <p><strong>Status:</strong> ${item.status}</p>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>

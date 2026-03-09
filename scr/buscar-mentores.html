@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buscar Mentores | Cognu</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Buscar Mentores</h1>
+        <p class="page-subtitle">Escolha um mentor para continuar seu agendamento.</p>
+      </div>
+
+      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+    </div>
+
+    <section class="page-card">
+      <div class="page-grid">
+        <div class="mentor-card">
+          <h3>Carlos Henrique</h3>
+          <p>Matemática, Física e estratégia de prova.</p>
+          <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+        </div>
+
+        <div class="mentor-card">
+          <h3>Juliana Souza</h3>
+          <p>Redação, humanas e organização de estudos.</p>
+          <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        logoutMock();
+      });
+    }
+  </script>
+</body>
+</html>
