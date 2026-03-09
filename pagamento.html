@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento da Mentória</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!--
+        Tela de pagamento da mentoria, onde o usuário pode escolher entre pagar via Pix ou Cartão de Crédito.
+                            /* Feita por Matheus do Nascimento, 2026. */
+    -->
+    <div class="container">
+
+        <div class="header">
+            <h1>Pagamento da Mentoria</h1>
+        </div>
+        
+        <div class="resumo">
+            <h2>Resumo da Mentoria</h2>
+            
+            <p><strong>Mentor:</strong> Matheus</p>
+            <p><strong>Matéria:</strong> Programação</p>
+            <p><strong>Duração:</strong> 60 minutos</p>
+            
+            <h3>Total: R$ 10,00</h3>
+            
+        </div>
+        
+        
+        
+        <div class="pagamento">
+
+            <div class="pagamento-detalhes">
+                <h2>Detalhes do Pagamento</h2>
+                <h3>Escolha a Forma de Pagamento</h3>
+                <label>
+                    <input type="radio" name="pagamento" value="pix">
+                    Pix
+                </label>
+                <label>
+                    <input type="radio" name="pagamento" value="cartao">
+                    Cartão de Crédito
+                </label>
+            </div>
+            
+            <div id="pix-area" style="display: none;">
+                <h3>Pagamento via Pix</h3>
+                <p>Escaneie o QR Code abaixo para realizar o pagamento:</p>
+                <img id="qrcode" src="./qrcode_cogni.png" alt="QR Code para pagamento via Pix">
+            </div>
+            
+            <div id="cartao-area" style="display: none;">
+                <h3>Pagamento com Cartão</h3>
+                
+                <div class="campo">
+                    <input type="text" placeholder="Número do Cartão" id="numero-cartao">
+                </div>
+                <div class="campo">
+                    <input type="text" placeholder="Nome no Cartão" id="nome-cartao">
+                </div>
+                <div class="linha-campo">
+                    <div class="campo">
+                        <input type="text" placeholder="Validade (MM/AA)" id="validade-cartao">
+                    </div>
+                    <div class="campo">
+                        <input type="text" placeholder="CVV" id="cvv-cartao">
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <div id="finalizar-pagamento" style="display: none;">
+                <button>Confirmar Pagamento</button>
+            </div>
+            
+        </div>
+        
+        <script src="pagamento.js"></script>
+    </body>
+    </html>
