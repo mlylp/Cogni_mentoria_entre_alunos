@@ -5,30 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Página da Mentoria | Cognu</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <div>
-        <h1 class="page-title">Página da Mentoria</h1>
-        <p class="page-subtitle">Informações da sessão e link do Meet.</p>
-      </div>
+      <a class="btn-secondary" href="calendario-aluno.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
 
-      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
     </div>
 
-    <section class="page-card">
-      <div class="info-list">
-        <div class="info-item"><strong>Mentor:</strong> Carlos Henrique</div>
-        <div class="info-item"><strong>Data:</strong> 15/03/2026</div>
-        <div class="info-item"><strong>Horário:</strong> 19:00</div>
-        <div class="info-item"><strong>Status:</strong> Confirmada</div>
-        <div class="info-item">
-          <strong>Link do Google Meet:</strong><br><br>
-          <a class="btn-link" href="https://meet.google.com/abc-defg-hij" target="_blank">Abrir Meet</a>
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-video"></i>
+            Página da Mentoria
+          </div>
+          <h1 class="page-title">Sessão confirmada</h1>
+          <p class="page-subtitle">
+            Acesse os dados da mentoria e utilize o link mock do Google Meet para representar a entrada na sessão.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Mentor</span>
+            <strong>Carlos Henrique</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Data</span>
+            <strong>15/03/2026</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Horário</span>
+            <strong>19:00</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Confirmada</strong>
+          </div>
         </div>
       </div>
     </section>
+
+    <div class="split-layout">
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Informações da sessão</h2>
+            <p class="section-text">Resumo principal da mentoria selecionada.</p>
+          </div>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item"><strong>Mentor:</strong> Carlos Henrique</div>
+          <div class="info-item"><strong>Data:</strong> 15/03/2026</div>
+          <div class="info-item"><strong>Horário:</strong> 19:00</div>
+          <div class="info-item"><strong>Status:</strong> Confirmada</div>
+          <div class="info-item"><strong>Formato:</strong> Encontro online via Google Meet</div>
+        </div>
+      </section>
+
+      <section class="page-card">
+        <div class="meet-box">
+          <h3>Entrar na mentoria</h3>
+          <p>
+            Este botão representa a abertura do link da sala online, conforme a etapa final
+            do fluxo principal do aluno.
+          </p>
+
+          <a class="btn-link" href="https://meet.google.com/abc-defg-hij" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            Abrir Meet
+          </a>
+        </div>
+      </section>
+    </div>
   </main>
 
   <script src="auth.js"></script>
@@ -37,9 +96,7 @@
 
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        logoutMock();
-      });
+      logoutBtn.addEventListener("click", () => logoutMock());
     }
   </script>
 </body>

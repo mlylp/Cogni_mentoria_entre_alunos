@@ -5,24 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard do Mentor | Cognu</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <div>
-        <h1 class="page-title">Dashboard do Mentor</h1>
-        <p class="page-subtitle">Bem-vindo, <span class="user-name"></span>.</p>
-      </div>
-
-      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+      <div></div>
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
     </div>
 
+    <section class="dashboard-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            Área do Mentor
+          </div>
+
+          <h1 class="page-title">Olá, <span class="user-name"></span> 👋</h1>
+          <p class="page-subtitle">
+            Gerencie sua disponibilidade, acompanhe mentorias marcadas e visualize
+            sua agenda de forma rápida e organizada.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Conta ativa</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Perfil</span>
+            <strong>Mentor</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Agenda</span>
+            <strong>Mock ativa</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Ambiente</span>
+            <strong>Frontend</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="page-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Painel de gestão</h2>
+          <p class="section-text">Acesse rapidamente os recursos principais do mentor.</p>
+        </div>
+      </div>
+
       <div class="page-grid">
-        <a class="nav-card btn-link" href="perfil-mentor.html">Perfil do Mentor</a>
-        <a class="nav-card btn-link" href="disponibilidade.html">Disponibilidade</a>
-        <a class="nav-card btn-link" href="mentorias-marcadas.html">Mentorias Marcadas</a>
-        <a class="nav-card btn-link" href="calendario-mentor.html">Calendário</a>
+        <a class="nav-card" href="perfil-mentor.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-user"></i>
+            </div>
+            <h3>Perfil do Mentor</h3>
+            <p>Consulte as informações públicas do perfil exibido na plataforma.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="disponibilidade.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <h3>Disponibilidade</h3>
+            <p>Gerencie horários e visualize a disponibilidade mock cadastrada.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="mentorias-marcadas.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-solid fa-book-open-reader"></i>
+            </div>
+            <h3>Mentorias Marcadas</h3>
+            <p>Veja as sessões vinculadas ao mentor e acompanhe os agendamentos.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="calendario-mentor.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <h3>Calendário</h3>
+            <p>Visualize sua agenda mock com horários disponíveis e sessões futuras.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
       </div>
     </section>
   </main>

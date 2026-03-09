@@ -5,25 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard do Aluno | Cognu</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <div>
-        <h1 class="page-title">Dashboard do Aluno</h1>
-        <p class="page-subtitle">Bem-vindo, <span class="user-name"></span>.</p>
-      </div>
-
-      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+      <div></div>
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
     </div>
 
+    <section class="dashboard-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Área do Aluno
+          </div>
+
+          <h1 class="page-title">Olá, <span class="user-name"></span> 👋</h1>
+          <p class="page-subtitle">
+            Aqui você pode buscar mentores, agendar sessões, acompanhar pagamentos
+            e visualizar suas mentorias em um só lugar.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Conta ativa</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Perfil</span>
+            <strong>Aluno</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Mentorias</span>
+            <strong>Fluxo mock</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Ambiente</span>
+            <strong>Frontend</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="page-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Ações principais</h2>
+          <p class="section-text">Escolha uma opção para continuar sua jornada na plataforma.</p>
+        </div>
+      </div>
+
       <div class="page-grid">
-        <a class="nav-card btn-link" href="buscar-mentores.html">Buscar Mentores</a>
-        <a class="nav-card btn-link" href="perfil-mentor.html">Perfil do Mentor</a>
-        <a class="nav-card btn-link" href="agendar-mentoria.html">Agendar Mentoria</a>
-        <a class="nav-card btn-link" href="pagamento.html">Pagamento</a>
-        <a class="nav-card btn-link" href="calendario-aluno.html">Calendário de Mentorias</a>
+        <a class="nav-card" href="buscar-mentores.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h3>Buscar Mentores</h3>
+            <p>Encontre mentores disponíveis por área e avance para o agendamento.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="perfil-mentor.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-user"></i>
+            </div>
+            <h3>Perfil do Mentor</h3>
+            <p>Visualize informações, especialidades e detalhes do mentor selecionado.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="agendar-mentoria.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-calendar"></i>
+            </div>
+            <h3>Agendar Mentoria</h3>
+            <p>Escolha horários disponíveis e avance para a confirmação da sessão.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="pagamento.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <h3>Pagamento</h3>
+            <p>Simule o pagamento da mentoria e conclua o fluxo principal do aluno.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <a class="nav-card" href="calendario-aluno.html">
+          <div class="nav-card-top">
+            <div class="nav-icon">
+              <i class="fa-regular fa-calendar-check"></i>
+            </div>
+            <h3>Calendário de Mentorias</h3>
+            <p>Acompanhe sessões já registradas e acesse a página da mentoria.</p>
+          </div>
+          <div class="nav-card-bottom">
+            Acessar <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
       </div>
     </section>
   </main>

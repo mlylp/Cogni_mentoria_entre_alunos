@@ -5,30 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pagamento | Cognu</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <div>
-        <h1 class="page-title">Pagamento</h1>
-        <p class="page-subtitle">Simulação de pagamento da mentoria.</p>
-      </div>
+      <a class="btn-secondary" href="agendar-mentoria.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
 
-      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
     </div>
 
-    <section class="page-card">
-      <div class="info-list">
-        <div class="info-item"><strong>Mentor:</strong> Carlos Henrique</div>
-        <div class="info-item"><strong>Data:</strong> 15/03/2026</div>
-        <div class="info-item"><strong>Horário:</strong> 19:00</div>
-        <div class="info-item"><strong>Valor:</strong> R$ 50,00</div>
-      </div>
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-credit-card"></i>
+            Pagamento
+          </div>
+          <h1 class="page-title">Confirme a mentoria</h1>
+          <p class="page-subtitle">
+            Esta etapa simula a confirmação financeira da sessão agendada, concluindo
+            o fluxo principal do aluno.
+          </p>
+        </div>
 
-      <button id="confirm-payment" class="btn-link" type="button" style="margin-top: 20px;">
-        Confirmar pagamento mock
-      </button>
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Mentor</span>
+            <strong>Carlos Henrique</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Data</span>
+            <strong>15/03/2026</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Horário</span>
+            <strong>19:00</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Valor</span>
+            <strong>R$ 50,00</strong>
+          </div>
+        </div>
+      </div>
     </section>
+
+    <div class="split-layout">
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Resumo da compra</h2>
+            <p class="section-text">Confira os dados da mentoria antes da confirmação.</p>
+          </div>
+        </div>
+
+        <div class="cards-stack">
+          <div class="payment-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <h3>Mentor selecionado</h3>
+            <p>Carlos Henrique</p>
+          </div>
+
+          <div class="payment-card">
+            <div class="card-icon">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <h3>Data da sessão</h3>
+            <p>15/03/2026 às 19:00</p>
+          </div>
+
+          <div class="payment-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-video"></i>
+            </div>
+            <h3>Formato da mentoria</h3>
+            <p>Sessão online com link do Google Meet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Finalizar pagamento</h2>
+            <p class="section-text">Simulação de confirmação para alimentar o calendário.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Valor total</h3>
+          <p>R$ 50,00</p>
+        </div>
+
+        <div class="inline-actions">
+          <button id="confirm-payment" class="btn-link" type="button">
+            <i class="fa-solid fa-check"></i>
+            Confirmar pagamento mock
+          </button>
+        </div>
+      </section>
+    </div>
   </main>
 
   <script src="auth.js"></script>
@@ -38,9 +122,7 @@
 
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        logoutMock();
-      });
+      logoutBtn.addEventListener("click", () => logoutMock());
     }
 
     const confirmPaymentBtn = document.getElementById("confirm-payment");

@@ -5,30 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buscar Mentores | Cognu</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <div>
-        <h1 class="page-title">Buscar Mentores</h1>
-        <p class="page-subtitle">Escolha um mentor para continuar seu agendamento.</p>
-      </div>
+      <a class="btn-secondary" href="dashboard-aluno.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
 
-      <button id="logout-btn" class="btn-logout" type="button">Sair</button>
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
     </div>
 
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Busca de Mentores
+          </div>
+          <h1 class="page-title">Encontre o mentor ideal</h1>
+          <p class="page-subtitle">
+            Explore mentores disponíveis e avance para o perfil, agendamento e pagamento
+            dentro do fluxo principal da plataforma.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Resultados</span>
+            <strong>2 mentores</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Formato</span>
+            <strong>Online</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Disponíveis</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Fluxo</span>
+            <strong>Mock</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="page-card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Mentores em destaque</h2>
+          <p class="section-text">Selecione um mentor para visualizar mais detalhes.</p>
+        </div>
+      </div>
+
       <div class="page-grid">
         <div class="mentor-card">
+          <div class="card-icon">
+            <i class="fa-solid fa-square-root-variable"></i>
+          </div>
           <h3>Carlos Henrique</h3>
-          <p>Matemática, Física e estratégia de prova.</p>
-          <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+          <p>Especialista em matemática, física e estratégias de resolução para provas.</p>
+          <div class="inline-actions">
+            <span class="status-pill"><i class="fa-solid fa-circle-check"></i> Disponível</span>
+            <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+          </div>
         </div>
 
         <div class="mentor-card">
+          <div class="card-icon">
+            <i class="fa-solid fa-pen-nib"></i>
+          </div>
           <h3>Juliana Souza</h3>
-          <p>Redação, humanas e organização de estudos.</p>
-          <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+          <p>Mentora focada em redação, humanas e organização da rotina de estudos.</p>
+          <div class="inline-actions">
+            <span class="status-pill"><i class="fa-solid fa-circle-check"></i> Disponível</span>
+            <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
+          </div>
         </div>
       </div>
     </section>
@@ -41,9 +99,7 @@
 
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => {
-        logoutMock();
-      });
+      logoutBtn.addEventListener("click", () => logoutMock());
     }
   </script>
 </body>
