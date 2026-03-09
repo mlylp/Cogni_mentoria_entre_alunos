@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
       showAuthMessage("Login realizado com sucesso.", "success");
 
       setTimeout(() => {
-        if (typeof redirectAfterLogin === "function") {
-          redirectAfterLogin();
-        }
-      }, 700);
+  if (typeof redirectAfterLogin === "function") {
+    redirectAfterLogin();
+  }
+}, 700);
     });
   }
 
@@ -158,10 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
       showAuthMessage("Cadastro realizado com sucesso.", "success");
 
       setTimeout(() => {
-        if (typeof redirectAfterLogin === "function") {
-          redirectAfterLogin();
-        }
-      }, 700);
+  if (typeof redirectAfterLogin === "function") {
+    redirectAfterLogin();
+  }
+}, 700);
     });
   }
 });
