@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buscar Mentores | Cognu</title>
-  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <main class="page-container">
     <div class="topbar">
-      <a class="btn-secondary" href="dashboard-aluno.html">
+      <a class="btn-secondary" href="dashboard.html">
         <i class="fa-solid fa-arrow-left"></i>
         Voltar
       </a>
@@ -30,15 +30,14 @@
           </div>
           <h1 class="page-title">Encontre o mentor ideal</h1>
           <p class="page-subtitle">
-            Explore mentores disponíveis e avance para o perfil, agendamento e pagamento
-            dentro do fluxo principal da plataforma.
+            Explore mentores disponiveis e avance para perfil, agendamento e pagamento.
           </p>
         </div>
 
         <div class="hero-mini-stats">
           <div class="mini-stat">
             <span>Resultados</span>
-            <strong>2 mentores</strong>
+            <strong id="results-count">0 mentores</strong>
           </div>
           <div class="mini-stat">
             <span>Formato</span>
@@ -46,7 +45,7 @@
           </div>
           <div class="mini-stat">
             <span>Status</span>
-            <strong>Disponíveis</strong>
+            <strong>Disponiveis</strong>
           </div>
           <div class="mini-stat">
             <span>Fluxo</span>
@@ -64,35 +63,11 @@
         </div>
       </div>
 
-      <div class="page-grid">
-        <div class="mentor-card">
-          <div class="card-icon">
-            <i class="fa-solid fa-square-root-variable"></i>
-          </div>
-          <h3>Carlos Henrique</h3>
-          <p>Especialista em matemática, física e estratégias de resolução para provas.</p>
-          <div class="inline-actions">
-            <span class="status-pill"><i class="fa-solid fa-circle-check"></i> Disponível</span>
-            <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
-          </div>
-        </div>
-
-        <div class="mentor-card">
-          <div class="card-icon">
-            <i class="fa-solid fa-pen-nib"></i>
-          </div>
-          <h3>Juliana Souza</h3>
-          <p>Mentora focada em redação, humanas e organização da rotina de estudos.</p>
-          <div class="inline-actions">
-            <span class="status-pill"><i class="fa-solid fa-circle-check"></i> Disponível</span>
-            <a class="btn-link" href="perfil-mentor.html">Ver perfil</a>
-          </div>
-        </div>
-      </div>
+      <div id="mentors-grid" class="page-grid"></div>
     </section>
   </main>
 
-  <script src="auth.js"></script>
+  <script src="../../scripts/auth.js"></script>
   <script>
     requireAuth();
     requireRole("aluno");
@@ -101,6 +76,53 @@
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => logoutMock());
     }
+
+    const resultsCount = document.getElementById("results-count");
+    const mentorsGrid = document.getElementById("mentors-grid");
+
+    function renderMentors() {
+      const mentors = getMentors();
+      resultsCount.textContent = `${mentors.length} mentores`;
+
+      if (!mentors.length) {
+        mentorsGrid.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-regular fa-face-frown"></i>
+            <h3>Nenhum mentor encontrado</h3>
+            <p>Os mentores mock serao exibidos aqui.</p>
+          </div>
+        `;
+        return;
+      }
+
+      mentorsGrid.innerHTML = mentors.map((mentor) => `
+        <div class="mentor-card">
+          <div class="card-icon">
+            <i class="${mentor.icon || "fa-solid fa-user"}"></i>
+          </div>
+          <h3>${mentor.nome}</h3>
+          <p>${mentor.bio}</p>
+          <div class="inline-actions">
+            <span class="status-pill"><i class="fa-solid fa-circle-check"></i> ${mentor.status}</span>
+            <a class="btn-link" data-mentor-link data-mentor-id="${mentor.id}" href="perfil-mentor.html?mentor=${mentor.id}">Ver perfil</a>
+          </div>
+        </div>
+      `).join("");
+
+      mentorsGrid.querySelectorAll("[data-mentor-link]").forEach((link) => {
+        link.addEventListener("click", () => {
+          setSelectedMentorId(link.dataset.mentorId);
+          clearSelectedSlot();
+        });
+      });
+    }
+
+    renderMentors();
   </script>
 </body>
 </html>
+
+
+
+
+

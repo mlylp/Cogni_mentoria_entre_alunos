@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página da Mentoria | Cognu</title>
+  <link rel="stylesheet" href="../../styles/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <a class="btn-secondary" href="calendario.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
+
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
+    </div>
+
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-video"></i>
+            Página da Mentoria
+          </div>
+          <h1 class="page-title">Sessão confirmada</h1>
+          <p class="page-subtitle">
+            Acesse os dados da mentoria e utilize o link mock do Google Meet para representar a entrada na sessão.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Mentor</span>
+            <strong id="mentor-stat">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Data</span>
+            <strong id="data-stat">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Horário</span>
+            <strong id="horario-stat">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong id="status-stat">-</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="split-layout">
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Informações da sessão</h2>
+            <p class="section-text">Resumo principal da mentoria selecionada.</p>
+          </div>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item"><strong>Mentor:</strong> <span id="mentor-info">-</span></div>
+          <div class="info-item"><strong>Data:</strong> <span id="data-info">-</span></div>
+          <div class="info-item"><strong>Horário:</strong> <span id="horario-info">-</span></div>
+          <div class="info-item"><strong>Status:</strong> <span id="status-info">-</span></div>
+          <div class="info-item"><strong>Formato:</strong> Encontro online via Google Meet</div>
+        </div>
+
+        <div class="inline-actions">
+          <button id="cancel-mentoria-btn" class="btn-secondary" type="button">
+            <i class="fa-solid fa-ban"></i>
+            Desmarcar mentoria
+          </button>
+        </div>
+      </section>
+
+      <section class="page-card">
+        <div class="meet-box">
+          <h3>Entrar na mentoria</h3>
+          <p>
+            Este botão representa a abertura do link da sala online, conforme a etapa final
+            do fluxo principal do aluno.
+          </p>
+
+          <a id="meet-link" class="btn-link" href="https://meet.google.com/abc-defg-hij" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            Abrir Meet
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="cancel-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+      <div class="modal-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="cancel-modal-title">Confirmar desmarcacao</h3>
+      <p>Tem certeza que deseja desmarcar esta mentoria? Esta acao nao pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button id="cancel-modal-close" class="btn-ghost" type="button">Voltar</button>
+        <button id="cancel-modal-confirm" class="btn-secondary" type="button">Desmarcar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/auth.js"></script>
+  <script>
+    requireAuth();
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => logoutMock());
+    }
+
+    const currentUser = getCurrentUser();
+    const mentorias = getMentorias();
+
+    const mentoriasDoAluno = mentorias.filter(
+      (item) => currentUser && item.aluno === currentUser.nome
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const mentoriaIdParam = params.get("id");
+
+    const mentoriaAtual = mentoriaIdParam
+      ? mentoriasDoAluno.find((item) => String(item.id) === String(mentoriaIdParam)) || null
+      : mentoriasDoAluno.length
+        ? mentoriasDoAluno[0]
+        : null;
+
+    const mentorStat = document.getElementById("mentor-stat");
+    const dataStat = document.getElementById("data-stat");
+    const horarioStat = document.getElementById("horario-stat");
+    const statusStat = document.getElementById("status-stat");
+
+    const mentorInfo = document.getElementById("mentor-info");
+    const dataInfo = document.getElementById("data-info");
+    const horarioInfo = document.getElementById("horario-info");
+    const statusInfo = document.getElementById("status-info");
+
+    const meetLink = document.getElementById("meet-link");
+    const cancelMentoriaBtn = document.getElementById("cancel-mentoria-btn");
+    const cancelModal = document.getElementById("cancel-modal");
+    const cancelModalClose = document.getElementById("cancel-modal-close");
+    const cancelModalConfirm = document.getElementById("cancel-modal-confirm");
+
+    function openCancelModal() {
+      if (!cancelModal) return;
+      cancelModal.classList.add("active");
+      cancelModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCancelModal() {
+      if (!cancelModal) return;
+      cancelModal.classList.remove("active");
+      cancelModal.setAttribute("aria-hidden", "true");
+    }
+
+    if (!mentoriaAtual) {
+      alert("Nenhuma mentoria encontrada para este aluno.");
+      window.location.href = "calendario.html";
+    } else {
+      mentorStat.textContent = mentoriaAtual.mentor;
+      dataStat.textContent = mentoriaAtual.data;
+      horarioStat.textContent = mentoriaAtual.horario;
+      statusStat.textContent = mentoriaAtual.status;
+
+      mentorInfo.textContent = mentoriaAtual.mentor;
+      dataInfo.textContent = mentoriaAtual.data;
+      horarioInfo.textContent = mentoriaAtual.horario;
+      statusInfo.textContent = mentoriaAtual.status;
+
+      if (meetLink && mentoriaAtual.meetLink) {
+        meetLink.href = mentoriaAtual.meetLink;
+      }
+    }
+
+    if (cancelMentoriaBtn) {
+      cancelMentoriaBtn.addEventListener("click", () => {
+        if (!mentoriaAtual) return;
+        openCancelModal();
+      });
+    }
+
+    if (cancelModalClose) {
+      cancelModalClose.addEventListener("click", closeCancelModal);
+    }
+
+    if (cancelModal) {
+      cancelModal.addEventListener("click", (event) => {
+        if (event.target === cancelModal) {
+          closeCancelModal();
+        }
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && cancelModal && cancelModal.classList.contains("active")) {
+        closeCancelModal();
+      }
+    });
+
+    if (cancelModalConfirm) {
+      cancelModalConfirm.addEventListener("click", () => {
+        if (!mentoriaAtual) return;
+        const mentoriasAtualizadas = mentorias.filter(
+          (item) => String(item.id) !== String(mentoriaAtual.id)
+        );
+
+        localStorage.setItem("cognu_mentorias", JSON.stringify(mentoriasAtualizadas));
+        closeCancelModal();
+        alert("Mentoria desmarcada com sucesso.");
+        window.location.href = "calendario.html";
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+

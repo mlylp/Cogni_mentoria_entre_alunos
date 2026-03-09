@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard do Mentor | Cognu</title>
-  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -35,19 +35,19 @@
         <div class="hero-mini-stats">
           <div class="mini-stat">
             <span>Status</span>
-            <strong>Conta ativa</strong>
+            <strong>Online</strong>
           </div>
           <div class="mini-stat">
             <span>Perfil</span>
             <strong>Mentor</strong>
           </div>
           <div class="mini-stat">
-            <span>Agenda</span>
-            <strong>Mock ativa</strong>
+            <span>Agendados</span>
+            <strong>8</strong>
           </div>
           <div class="mini-stat">
-            <span>Ambiente</span>
-            <strong>Frontend</strong>
+            <span>Horarios disponiveis</span>
+            <strong>5</strong>
           </div>
         </div>
       </div>
@@ -62,62 +62,37 @@
       </div>
 
       <div class="page-grid">
-        <a class="nav-card" href="perfil-mentor.html">
+        <a class="nav-card" href="perfil.html">
           <div class="nav-card-top">
             <div class="nav-icon">
               <i class="fa-regular fa-user"></i>
             </div>
             <h3>Perfil do Mentor</h3>
-            <p>Consulte as informações públicas do perfil exibido na plataforma.</p>
+            <p>Consulte as informações públicas do seu perfil exibido na plataforma.</p>
           </div>
           <div class="nav-card-bottom">
             Acessar <i class="fa-solid fa-arrow-right"></i>
           </div>
         </a>
 
-        <a class="nav-card" href="disponibilidade.html">
-          <div class="nav-card-top">
-            <div class="nav-icon">
-              <i class="fa-regular fa-clock"></i>
-            </div>
-            <h3>Disponibilidade</h3>
-            <p>Gerencie horários e visualize a disponibilidade mock cadastrada.</p>
-          </div>
-          <div class="nav-card-bottom">
-            Acessar <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </a>
-
-        <a class="nav-card" href="mentorias-marcadas.html">
+        <a class="nav-card" href="agenda-mentorias.html">
           <div class="nav-card-top">
             <div class="nav-icon">
               <i class="fa-solid fa-book-open-reader"></i>
             </div>
-            <h3>Mentorias Marcadas</h3>
-            <p>Veja as sessões vinculadas ao mentor e acompanhe os agendamentos.</p>
+            <h3>Agenda de Mentorias</h3>
+            <p>Veja a agenda vinculada ao mentor e acompanhe os agendamentos.</p>
           </div>
           <div class="nav-card-bottom">
             Acessar <i class="fa-solid fa-arrow-right"></i>
           </div>
         </a>
 
-        <a class="nav-card" href="calendario-mentor.html">
-          <div class="nav-card-top">
-            <div class="nav-icon">
-              <i class="fa-regular fa-calendar-days"></i>
-            </div>
-            <h3>Calendário</h3>
-            <p>Visualize sua agenda mock com horários disponíveis e sessões futuras.</p>
-          </div>
-          <div class="nav-card-bottom">
-            Acessar <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        </a>
       </div>
     </section>
   </main>
 
-  <script src="auth.js"></script>
+  <script src="../../scripts/auth.js"></script>
   <script>
     requireAuth();
     requireRole("mentor");
@@ -132,3 +107,7 @@
   </script>
 </body>
 </html>
+
+
+
+

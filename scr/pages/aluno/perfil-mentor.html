@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Mentor | Cognu</title>
+  <link rel="stylesheet" href="../../styles/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <a id="back-link" class="btn-secondary" href="buscar-mentores.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
+
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
+    </div>
+
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-regular fa-user"></i>
+            Perfil do Mentor
+          </div>
+          <h1 id="mentor-name-title" class="page-title">Mentor</h1>
+          <p id="mentor-bio" class="page-subtitle"></p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Avaliacao</span>
+            <strong id="mentor-rating">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Experiencia</span>
+            <strong id="mentor-experience">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Formato</span>
+            <strong id="mentor-format">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong id="mentor-status">-</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="split-layout">
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Biografia do mentor</h2>
+            <p class="section-text">Conheca o perfil e a abordagem do mentor antes de agendar.</p>
+          </div>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item"><strong>Especialidade:</strong> <span id="mentor-specialty">-</span></div>
+          <div class="info-item"><strong>Metodologia:</strong> <span id="mentor-methodology">-</span></div>
+          <div class="info-item"><strong>Publico:</strong> <span id="mentor-public">-</span></div>
+          <div class="info-item"><strong>Duracao media:</strong> <span id="mentor-duration">-</span></div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Sobre a mentoria</h3>
+          <p id="mentor-summary"></p>
+        </div>
+
+        <div class="inline-actions">
+          <a id="choose-slot-link" class="btn-link" href="agendar-mentoria.html">
+            <i class="fa-regular fa-calendar"></i>
+            Escolher horario
+          </a>
+        </div>
+      </section>
+
+      <section class="page-card">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Resumo rapido</h2>
+            <p class="section-text">Visao objetiva para facilitar a decisao do aluno.</p>
+          </div>
+        </div>
+
+        <div id="summary-cards" class="cards-stack"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../../scripts/auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => logoutMock());
+    }
+
+    const backLink = document.getElementById("back-link");
+    const chooseSlotLink = document.getElementById("choose-slot-link");
+    backLink.href = "buscar-mentores.html";
+
+    function resolveMentor() {
+      const params = new URLSearchParams(window.location.search);
+      const mentorFromQuery = Number(params.get("mentor"));
+
+      if (mentorFromQuery) {
+        const mentor = getMentorById(mentorFromQuery);
+        if (mentor) {
+          setSelectedMentorId(mentor.id);
+          return mentor;
+        }
+      }
+
+      return getSelectedMentor();
+    }
+
+    function renderMentorProfile() {
+      const mentor = resolveMentor();
+
+      if (!mentor) {
+        alert("Nenhum mentor encontrado.");
+        window.location.href = "buscar-mentores.html";
+        return;
+      }
+
+      document.getElementById("mentor-name-title").textContent = mentor.nome;
+      document.getElementById("mentor-bio").textContent = mentor.bio;
+      document.getElementById("mentor-rating").textContent = mentor.avaliacao;
+      document.getElementById("mentor-experience").textContent = mentor.experiencia;
+      document.getElementById("mentor-format").textContent = mentor.formato;
+      document.getElementById("mentor-status").textContent = mentor.status;
+
+      document.getElementById("mentor-specialty").textContent = mentor.especialidade;
+      document.getElementById("mentor-methodology").textContent = mentor.metodologia;
+      document.getElementById("mentor-public").textContent = mentor.publico;
+      document.getElementById("mentor-duration").textContent = mentor.duracao;
+
+      document.getElementById("mentor-summary").textContent = `${mentor.nome} atua como ${mentor.titulo.toLowerCase()} e oferece sessoes ${mentor.formato}.`;
+
+      chooseSlotLink.href = `agendar-mentoria.html?mentor=${mentor.id}`;
+      chooseSlotLink.addEventListener("click", () => {
+        setSelectedMentorId(mentor.id);
+        clearSelectedSlot();
+      });
+
+      const summaryCards = document.getElementById("summary-cards");
+      summaryCards.innerHTML = mentor.resumoCards.map((card) => `
+        <div class="detail-card">
+          <div class="card-icon">
+            <i class="${card.icon}"></i>
+          </div>
+          <h3>${card.titulo}</h3>
+          <p>${card.texto}</p>
+        </div>
+      `).join("");
+    }
+
+    renderMentorProfile();
+  </script>
+</body>
+</html>
+
+
+
+

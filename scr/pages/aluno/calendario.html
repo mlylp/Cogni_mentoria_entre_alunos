@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário do Aluno | Cognu</title>
+  <link rel="stylesheet" href="../../styles/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <a class="btn-secondary" href="dashboard.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
+
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
+    </div>
+
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-regular fa-calendar-check"></i>
+            Calendário de Mentorias
+          </div>
+          <h1 class="page-title">Agenda do aluno</h1>
+          <p class="page-subtitle">
+            Visualize suas mentorias em um calendário mensal e clique no botão
+            de adicionar para iniciar um novo agendamento.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Visualização</span>
+            <strong>Mensal</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Formato</span>
+            <strong>Calendário</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Agenda</span>
+            <strong>Interativa</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Online</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-card">
+      <div class="calendar-header">
+        <div>
+          <h2 class="section-title" id="calendar-month-title">Mês</h2>
+          <p class="section-text">Clique no + para buscar um mentor e iniciar a mentoria.</p>
+        </div>
+
+        <div class="calendar-actions">
+          <button class="btn-secondary" id="prev-month" type="button">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="btn-secondary" id="today-btn" type="button">Hoje</button>
+          <button class="btn-secondary" id="next-month" type="button">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>Dom</div>
+        <div>Seg</div>
+        <div>Ter</div>
+        <div>Qua</div>
+        <div>Qui</div>
+        <div>Sex</div>
+        <div>Sáb</div>
+      </div>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+    </section>
+
+    <section class="page-card" style="margin-top: 22px;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Próximas mentorias</h2>
+          <p class="section-text">Lista resumida das sessões do aluno.</p>
+        </div>
+      </div>
+
+      <div id="events-list" class="cards-stack"></div>
+    </section>
+  </main>
+
+  <script src="../../scripts/auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("aluno");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => logoutMock());
+    }
+
+    const monthTitle = document.getElementById("calendar-month-title");
+    const calendarGrid = document.getElementById("calendar-grid");
+    const eventsList = document.getElementById("events-list");
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
+    const todayBtn = document.getElementById("today-btn");
+
+    const user = getCurrentUser();
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    function pad(number) {
+      return String(number).padStart(2, "0");
+    }
+
+    function formatDate(year, month, day) {
+      return `${year}-${pad(month + 1)}-${pad(day)}`;
+    }
+
+    function isToday(year, month, day) {
+      return (
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      );
+    }
+
+    function normalizeMentoriaDate(rawDate) {
+      if (!rawDate) return "";
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+        return rawDate;
+      }
+
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(rawDate)) {
+        const [day, month, year] = rawDate.split("/");
+        return `${year}-${month}-${day}`;
+      }
+
+      return rawDate;
+    }
+
+    function getMentoriasSnapshot() {
+      const mentorias = getMentorias().filter((item) => item.aluno === user.nome);
+
+      return mentorias.map((item) => ({
+        ...item,
+        data: normalizeMentoriaDate(item.data)
+      }));
+    }
+
+    function buildMentoriasByDateIndex(mentorias) {
+      return mentorias.reduce((acc, item) => {
+        if (!acc[item.data]) {
+          acc[item.data] = [];
+        }
+
+        acc[item.data].push(item);
+        return acc;
+      }, {});
+    }
+
+    function renderEventList(mentorias) {
+      const mentoriasOrdenadas = [...mentorias].sort((a, b) => {
+        const dateA = `${a.data}T${a.horario}`;
+        const dateB = `${b.data}T${b.horario}`;
+        return dateA.localeCompare(dateB);
+      });
+
+      if (!mentoriasOrdenadas.length) {
+        eventsList.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <h3>Nenhuma mentoria encontrada</h3>
+            <p>Clique no + em um dia do calendário para buscar um mentor.</p>
+          </div>
+        `;
+        return;
+      }
+
+      eventsList.innerHTML = mentoriasOrdenadas.map((item) => `
+        <div class="event-card">
+          <div class="card-icon">
+            <i class="fa-regular fa-calendar-days"></i>
+          </div>
+          <h3>${item.mentor}</h3>
+          <p><strong>Data:</strong> ${item.data}</p>
+          <p><strong>Horário:</strong> ${item.horario}</p>
+          <p><strong>Status:</strong> ${item.status}</p>
+          <div class="inline-actions">
+            <span class="status-pill">
+              <i class="fa-solid fa-circle-check"></i>
+              Confirmada
+            </span>
+            <a class="btn-link" href="detalhe-mentoria.html?id=${item.id}">Abrir mentoria</a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function goToBuscarMentores(dateString) {
+      sessionStorage.setItem("cognu_selected_date", dateString);
+      window.location.href = "buscar-mentores.html";
+    }
+
+    function goToMentoria(mentoriaId) {
+      if (!mentoriaId) {
+        window.location.href = "detalhe-mentoria.html";
+        return;
+      }
+
+      window.location.href = `detalhe-mentoria.html?id=${mentoriaId}`;
+    }
+
+    function renderCalendar(month, year, mentoriasByDate) {
+      calendarGrid.innerHTML = "";
+      monthTitle.textContent = `${monthNames[month]} de ${year}`;
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const prevDate = daysInPrevMonth - firstDay + i + 1;
+        const cell = document.createElement("div");
+        cell.className = "calendar-day other-month";
+        cell.innerHTML = `<div class="calendar-day-number">${prevDate}</div>`;
+        calendarGrid.appendChild(cell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateString = formatDate(year, month, day);
+        const dayEvents = mentoriasByDate[dateString] || [];
+
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+
+        if (isToday(year, month, day)) {
+          cell.classList.add("today");
+        }
+
+        cell.innerHTML = `
+          <div class="calendar-day-top">
+            <span class="calendar-day-number">${day}</span>
+            <button class="calendar-add-btn" type="button" title="Marcar mentoria">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <div class="calendar-events">
+            ${dayEvents.map(event => `
+              <div class="calendar-event">
+                <strong>${event.horario}</strong> ${event.mentor}
+              </div>
+            `).join("")}
+          </div>
+        `;
+
+        cell.addEventListener("click", (e) => {
+          if (e.target.closest(".calendar-add-btn")) {
+            goToBuscarMentores(dateString);
+            return;
+          }
+
+          if (dayEvents.length) {
+            goToMentoria(dayEvents[0].id);
+          } else {
+            goToBuscarMentores(dateString);
+          }
+        });
+
+        calendarGrid.appendChild(cell);
+      }
+
+      const totalCells = firstDay + daysInMonth;
+      const remainingCells = (7 - (totalCells % 7)) % 7;
+
+      for (let i = 1; i <= remainingCells; i++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day other-month";
+        cell.innerHTML = `<div class="calendar-day-number">${i}</div>`;
+        calendarGrid.appendChild(cell);
+      }
+    }
+
+    function renderAgenda() {
+      const mentoriasSnapshot = getMentoriasSnapshot();
+      const mentoriasByDate = buildMentoriasByDateIndex(mentoriasSnapshot);
+
+      renderCalendar(currentMonth, currentYear, mentoriasByDate);
+      renderEventList(mentoriasSnapshot);
+    }
+
+    prevMonthBtn.addEventListener("click", () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderAgenda();
+    });
+
+    nextMonthBtn.addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderAgenda();
+    });
+
+    todayBtn.addEventListener("click", () => {
+      currentMonth = today.getMonth();
+      currentYear = today.getFullYear();
+      renderAgenda();
+    });
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === "cognu_mentorias" || event.key === null) {
+        renderAgenda();
+      }
+    });
+
+    window.addEventListener("pageshow", () => {
+      renderAgenda();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        renderAgenda();
+      }
+    });
+
+    renderAgenda();
+  </script>
+</body>
+</html>
+
+
+
+

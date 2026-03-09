@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentorias Marcadas | Cognu</title>
+  <link rel="stylesheet" href="../../styles/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <main class="page-container">
+    <div class="topbar">
+      <a class="btn-secondary" href="dashboard.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </a>
+
+      <button id="logout-btn" class="btn-logout" type="button">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Sair
+      </button>
+    </div>
+
+    <section class="internal-hero">
+      <div class="hero-content">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-book-open-reader"></i>
+            Mentorias Marcadas
+          </div>
+          <h1 class="page-title">Agenda do mentor</h1>
+          <p class="page-subtitle">
+            Visualize disponibilidade e mentorias agendadas no mesmo calendario.
+            Apenas horarios disponiveis podem ser adicionados ou editados.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span>Perfil</span>
+            <strong>Mentor</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Disponiveis</span>
+            <strong id="available-count">0</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Agendadas</span>
+            <strong id="booked-count">0</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Status</span>
+            <strong>Ativo</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-card">
+      <div class="calendar-header">
+        <div>
+          <h2 class="section-title" id="calendar-month-title">Mes</h2>
+          <p class="section-text">Use + para adicionar disponibilidade e clique em um horario disponivel para editar.</p>
+        </div>
+
+        <div class="calendar-actions">
+          <button class="btn-secondary" id="prev-month" type="button">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="btn-secondary" id="today-btn" type="button">Hoje</button>
+          <button class="btn-secondary" id="next-month" type="button">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mentor-legend">
+        <span class="legend-item legend-item--available"><i class="fa-regular fa-clock"></i> Disponivel</span>
+        <span class="legend-item legend-item--booked"><i class="fa-regular fa-calendar-check"></i> Agendada</span>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>Dom</div>
+        <div>Seg</div>
+        <div>Ter</div>
+        <div>Qua</div>
+        <div>Qui</div>
+        <div>Sex</div>
+        <div>Sab</div>
+      </div>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+    </section>
+  </main>
+
+  <div id="availability-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="availability-modal-title">
+      <div class="modal-icon">
+        <i class="fa-regular fa-clock"></i>
+      </div>
+      <h3 id="availability-modal-title">Editar disponibilidade</h3>
+      <p>Defina data e horario do slot disponivel.</p>
+
+      <div class="form-inline-grid">
+        <label class="form-inline-field">
+          Data
+          <input id="availability-date" type="date" />
+        </label>
+        <label class="form-inline-field">
+          Horario
+          <input id="availability-time" type="time" />
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button id="availability-delete" class="btn-ghost" type="button">Excluir</button>
+        <button id="availability-cancel" class="btn-ghost" type="button">Cancelar</button>
+        <button id="availability-save" class="btn-secondary" type="button">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-confirm-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+      <div class="modal-icon">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <h3 id="delete-confirm-title">Excluir horario</h3>
+      <p>Tem certeza que deseja excluir este horario disponivel?</p>
+      <div class="modal-actions">
+        <button id="delete-confirm-cancel" class="btn-ghost" type="button">Cancelar</button>
+        <button id="delete-confirm-action" class="btn-secondary" type="button">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/auth.js"></script>
+  <script>
+    requireAuth();
+    requireRole("mentor");
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => logoutMock());
+    }
+
+    const monthTitle = document.getElementById("calendar-month-title");
+    const calendarGrid = document.getElementById("calendar-grid");
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
+    const todayBtn = document.getElementById("today-btn");
+    const availableCount = document.getElementById("available-count");
+    const bookedCount = document.getElementById("booked-count");
+
+    const availabilityModal = document.getElementById("availability-modal");
+    const availabilityDate = document.getElementById("availability-date");
+    const availabilityTime = document.getElementById("availability-time");
+    const availabilityDelete = document.getElementById("availability-delete");
+    const availabilityCancel = document.getElementById("availability-cancel");
+    const availabilitySave = document.getElementById("availability-save");
+    availabilityDelete.style.display = "none";
+    const deleteConfirmModal = document.getElementById("delete-confirm-modal");
+    const deleteConfirmCancel = document.getElementById("delete-confirm-cancel");
+    const deleteConfirmAction = document.getElementById("delete-confirm-action");
+
+    const mentorProfile = getCurrentMentorProfile();
+    if (!mentorProfile) {
+      alert("Perfil do mentor nao encontrado.");
+      window.location.href = "dashboard.html";
+      throw new Error("Mentor profile missing");
+    }
+
+    const mentorId = mentorProfile ? mentorProfile.id : null;
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let editingSlotId = null;
+    let pendingDeleteSlotId = null;
+    const mockStudentNames = [
+      "Lucas Almeida",
+      "Marina Costa",
+      "Joao Pedro Lima",
+      "Ana Beatriz Souza",
+      "Felipe Rocha",
+      "Camila Ferreira",
+      "Bruno Nascimento",
+      "Larissa Mendes",
+      "Pedro Henrique Silva",
+      "Isabela Martins"
+    ];
+
+    function pad(number) {
+      return String(number).padStart(2, "0");
+    }
+
+    function formatDate(year, month, day) {
+      return `${year}-${pad(month + 1)}-${pad(day)}`;
+    }
+
+    function normalizeDate(value) {
+      if (!value) return "";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+        const [day, month, year] = value.split("/");
+        return `${year}-${month}-${day}`;
+      }
+      return value;
+    }
+
+    function isToday(year, month, day) {
+      return (
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      );
+    }
+
+    function getMentorAvailabilities() {
+      const mentor = getMentorById(mentorId);
+      const slots = mentor && Array.isArray(mentor.slots) ? mentor.slots : [];
+
+      return slots.map((slot) => ({
+        ...slot,
+        data: normalizeDate(slot.data),
+        tipo: "disponivel"
+      }));
+    }
+
+    function getMentorBookings() {
+      const mentorias = getMentorias();
+      return mentorias
+        .filter((item) => {
+          const byId = mentorId && Number(item.mentorId) === Number(mentorId);
+          const byName = item.mentor === mentorProfile.nome;
+          return byId || byName;
+        })
+        .map((item) => ({
+          ...item,
+          aluno:
+            item.aluno && item.aluno !== "Aluno Teste"
+              ? item.aluno
+              : mockStudentNames[Math.abs(Number(item.id) || 0) % mockStudentNames.length],
+          data: normalizeDate(item.data),
+          tipo: "agendada"
+        }));
+    }
+
+    function indexByDate(events) {
+      return events.reduce((acc, event) => {
+        if (!acc[event.data]) acc[event.data] = [];
+        acc[event.data].push(event);
+        return acc;
+      }, {});
+    }
+
+    function openAvailabilityModal(date, horario, slotId) {
+      editingSlotId = slotId || null;
+      availabilityDate.value = date || "";
+      availabilityTime.value = horario || "";
+      availabilityDelete.style.display = editingSlotId ? "inline-flex" : "none";
+      availabilityModal.classList.add("active");
+      availabilityModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeAvailabilityModal() {
+      editingSlotId = null;
+      availabilityModal.classList.remove("active");
+      availabilityModal.setAttribute("aria-hidden", "true");
+    }
+
+    function openDeleteConfirmModal(slotId) {
+      pendingDeleteSlotId = slotId;
+      deleteConfirmModal.classList.add("active");
+      deleteConfirmModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDeleteConfirmModal() {
+      pendingDeleteSlotId = null;
+      deleteConfirmModal.classList.remove("active");
+      deleteConfirmModal.setAttribute("aria-hidden", "true");
+    }
+
+    function renderCalendar(availableByDate, bookedByDate) {
+      calendarGrid.innerHTML = "";
+      monthTitle.textContent = `${monthNames[currentMonth]} de ${currentYear}`;
+
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const prevDate = daysInPrevMonth - firstDay + i + 1;
+        const cell = document.createElement("div");
+        cell.className = "calendar-day other-month";
+        cell.innerHTML = `<div class="calendar-day-number">${prevDate}</div>`;
+        calendarGrid.appendChild(cell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateString = formatDate(currentYear, currentMonth, day);
+        const availableEvents = availableByDate[dateString] || [];
+        const bookedEvents = bookedByDate[dateString] || [];
+
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+
+        if (isToday(currentYear, currentMonth, day)) {
+          cell.classList.add("today");
+        }
+
+        cell.innerHTML = `
+          <div class="calendar-day-top">
+            <span class="calendar-day-number">${day}</span>
+            <button class="calendar-add-btn" type="button" title="Adicionar disponibilidade">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <div class="calendar-events">
+            ${availableEvents.map((event) => `
+              <button class="calendar-event calendar-event--available" type="button" data-slot-id="${event.id}" data-date="${event.data}" data-time="${event.horario}">
+                <strong>${event.horario}</strong> Disponivel
+              </button>
+            `).join("")}
+            ${bookedEvents.map((event) => `
+              <div class="calendar-event calendar-event--booked">
+                <strong>${event.horario}</strong> ${event.aluno || "Aluno"}
+              </div>
+            `).join("")}
+          </div>
+        `;
+
+        const addBtn = cell.querySelector(".calendar-add-btn");
+        if (addBtn) {
+          addBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openAvailabilityModal(dateString, "", null);
+          });
+        }
+
+        cell.querySelectorAll("[data-slot-id]").forEach((slotBtn) => {
+          slotBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openAvailabilityModal(slotBtn.dataset.date, slotBtn.dataset.time, slotBtn.dataset.slotId);
+          });
+        });
+
+        calendarGrid.appendChild(cell);
+      }
+
+      const totalCells = firstDay + daysInMonth;
+      const remainingCells = (7 - (totalCells % 7)) % 7;
+
+      for (let i = 1; i <= remainingCells; i++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day other-month";
+        cell.innerHTML = `<div class="calendar-day-number">${i}</div>`;
+        calendarGrid.appendChild(cell);
+      }
+    }
+
+    function renderAgenda() {
+      const availabilities = getMentorAvailabilities();
+      const bookings = getMentorBookings();
+
+      availableCount.textContent = String(availabilities.length);
+      bookedCount.textContent = String(bookings.length);
+
+      renderCalendar(indexByDate(availabilities), indexByDate(bookings));
+    }
+
+    availabilityCancel.addEventListener("click", closeAvailabilityModal);
+
+    availabilityModal.addEventListener("click", (event) => {
+      if (event.target === availabilityModal) {
+        closeAvailabilityModal();
+      }
+    });
+
+    deleteConfirmModal.addEventListener("click", (event) => {
+      if (event.target === deleteConfirmModal) {
+        closeDeleteConfirmModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && availabilityModal.classList.contains("active")) {
+        closeAvailabilityModal();
+      } else if (event.key === "Escape" && deleteConfirmModal.classList.contains("active")) {
+        closeDeleteConfirmModal();
+      }
+    });
+
+    availabilitySave.addEventListener("click", () => {
+      const data = availabilityDate.value;
+      const horario = availabilityTime.value;
+
+      if (!data || !horario) {
+        alert("Preencha data e horario.");
+        return;
+      }
+
+      const bookedConflict = getMentorBookings().some(
+        (event) => event.data === data && event.horario === horario
+      );
+
+      if (bookedConflict) {
+        alert("Ja existe uma mentoria agendada neste horario.");
+        return;
+      }
+
+      const ok = upsertMentorSlot(mentorId, {
+        id: editingSlotId || `custom-${Date.now()}`,
+        data,
+        horario,
+        status: "disponivel",
+        meetLink: `https://meet.google.com/slot-${Date.now()}`
+      });
+
+      if (!ok) {
+        alert("Nao foi possivel salvar o horario.");
+        return;
+      }
+
+      closeAvailabilityModal();
+      renderAgenda();
+    });
+
+    availabilityDelete.addEventListener("click", () => {
+      if (!editingSlotId) return;
+      const slotIdToDelete = editingSlotId;
+      closeAvailabilityModal();
+      openDeleteConfirmModal(slotIdToDelete);
+    });
+
+    deleteConfirmCancel.addEventListener("click", closeDeleteConfirmModal);
+
+    deleteConfirmAction.addEventListener("click", () => {
+      if (!pendingDeleteSlotId) return;
+      const ok = removeMentorSlot(mentorId, pendingDeleteSlotId);
+
+      if (!ok) {
+        alert("Nao foi possivel excluir o horario.");
+        return;
+      }
+
+      closeDeleteConfirmModal();
+      renderAgenda();
+    });
+
+    prevMonthBtn.addEventListener("click", () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderAgenda();
+    });
+
+    nextMonthBtn.addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderAgenda();
+    });
+
+    todayBtn.addEventListener("click", () => {
+      currentMonth = today.getMonth();
+      currentYear = today.getFullYear();
+      renderAgenda();
+    });
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === "cognu_mentorias" || event.key === "cognu_mentors" || event.key === null) {
+        renderAgenda();
+      }
+    });
+
+    window.addEventListener("pageshow", () => renderAgenda());
+
+    renderAgenda();
+  </script>
+</body>
+</html>
+
+
+
+
