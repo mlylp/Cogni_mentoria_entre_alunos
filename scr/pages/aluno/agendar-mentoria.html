@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agendar Mentoria | Cognu</title>
+  <title>Agendar Mentoria | cogni</title>
   <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -109,7 +109,7 @@
 
       backToProfile.href = `perfil-mentor.html?mentor=${mentor.id}`;
 
-      const preferredDate = sessionStorage.getItem("cognu_selected_date");
+      const preferredDate = sessionStorage.getItem("cogni_selected_date");
       const sortedSlots = [...mentor.slots].sort((a, b) => {
         if (!preferredDate) return 0;
         if (a.data === preferredDate && b.data !== preferredDate) return -1;
@@ -148,6 +148,7 @@
   </script>
 </body>
 </html>
+
 
 
 

@@ -270,12 +270,12 @@ const MOCK_MENTORS = [
 ];
 
 const STORAGE_KEYS = {
-  token: "cognu_token",
-  user: "cognu_user",
-  mentorias: "cognu_mentorias",
-  mentors: "cognu_mentors",
-  selectedMentorId: "cognu_selected_mentor_id",
-  selectedSlot: "cognu_selected_slot"
+  token: "cogni_token",
+  user: "cogni_user",
+  mentorias: "cogni_mentorias",
+  mentors: "cogni_mentors",
+  selectedMentorId: "cogni_selected_mentor_id",
+  selectedSlot: "cogni_selected_slot"
 };
 
 function getCurrentSection() {
@@ -634,3 +634,4 @@ function attachLogout(selector) {
 
 initializeMentors();
 initializeMentorias();
+

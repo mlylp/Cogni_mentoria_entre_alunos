@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Página da Mentoria | Cognu</title>
+  <title>Página da Mentoria | cogni</title>
   <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -30,7 +30,7 @@
           </div>
           <h1 class="page-title">Sessão confirmada</h1>
           <p class="page-subtitle">
-            Acesse os dados da mentoria e utilize o link mock do Google Meet para representar a entrada na sessão.
+            Acesse os dados da mentoria e utilize o link do Google Meet para representar a entrada na sessão.
           </p>
         </div>
 
@@ -215,7 +215,7 @@
           (item) => String(item.id) !== String(mentoriaAtual.id)
         );
 
-        localStorage.setItem("cognu_mentorias", JSON.stringify(mentoriasAtualizadas));
+        localStorage.setItem("cogni_mentorias", JSON.stringify(mentoriasAtualizadas));
         closeCancelModal();
         alert("Mentoria desmarcada com sucesso.");
         window.location.href = "calendario.html";
@@ -224,6 +224,7 @@
   </script>
 </body>
 </html>
+
 
 
 

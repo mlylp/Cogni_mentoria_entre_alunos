@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pagamento | Cognu</title>
+  <title>Pagamento | cogni</title>
   <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -107,7 +107,7 @@
         <div class="inline-actions">
           <button id="confirm-payment" class="btn-link" type="button">
             <i class="fa-solid fa-check"></i>
-            Confirmar pagamento mock
+            Confirmar pagamento
           </button>
         </div>
       </section>
@@ -155,7 +155,7 @@
     function initializePayment() {
       const backToSchedule = document.getElementById("back-to-schedule");
       const { mentor, slot } = resolveMentorAndSlot();
-      const selectedDateFromCalendar = sessionStorage.getItem("cognu_selected_date");
+      const selectedDateFromCalendar = sessionStorage.getItem("cogni_selected_date");
       const scheduledDate = isIsoDate(selectedDateFromCalendar) ? selectedDateFromCalendar : slot?.data;
 
       if (!mentor) {
@@ -198,7 +198,7 @@
           });
 
           clearSelectedSlot();
-          sessionStorage.removeItem("cognu_selected_date");
+          sessionStorage.removeItem("cogni_selected_date");
           window.location.href = "calendario.html";
         });
       }
@@ -208,6 +208,7 @@
   </script>
 </body>
 </html>
+
 
 
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendário do Aluno | Cognu</title>
+  <title>Calendário do Aluno | cogni</title>
   <link rel="stylesheet" href="../../styles/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -216,7 +216,7 @@
     }
 
     function goToBuscarMentores(dateString) {
-      sessionStorage.setItem("cognu_selected_date", dateString);
+      sessionStorage.setItem("cogni_selected_date", dateString);
       window.location.href = "buscar-mentores.html";
     }
 
@@ -332,7 +332,7 @@
     });
 
     window.addEventListener("storage", (event) => {
-      if (event.key === "cognu_mentorias" || event.key === null) {
+      if (event.key === "cogni_mentorias" || event.key === null) {
         renderAgenda();
       }
     });
@@ -351,6 +351,7 @@
   </script>
 </body>
 </html>
+
 
 
 
